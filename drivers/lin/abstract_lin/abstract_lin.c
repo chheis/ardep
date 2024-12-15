@@ -56,7 +56,8 @@ static int lin_header_callback(const struct device *lin_dev,
     }
 
     frame->len = cb->frame_size;
-    frame->type = LIN_CHECKSUM_AUTO;
+    //TO Do: must be configured globally with the project config
+    frame->type = LIN_CHECKSUM_ENHANCED; //frame->type = LIN_CHECKSUM_AUTO;
 
     switch (cb->type) {
       case INCOMING:
@@ -214,8 +215,10 @@ static int al_schedule_now(const struct device *dev, uint8_t frame_id) {
 
     switch (cb->type) {
       case INCOMING: {
-        return lin_receive(config->lin_bus, cb->frame_id, LIN_CHECKSUM_AUTO,
+        //TO Do: must be configured globally with the project config
+        return lin_receive(config->lin_bus, cb->frame_id, LIN_CHECKSUM_ENHANCED,
                            cb->frame_size);
+        //return lin_receive(config->lin_bus, cb->frame_id, LIN_CHECKSUM_AUTO, cb->frame_size);
       }
 
       case OUTGOING: {
@@ -223,7 +226,8 @@ static int al_schedule_now(const struct device *dev, uint8_t frame_id) {
 
         frame.id = cb->frame_id;
         frame.len = cb->frame_size;
-        frame.type = LIN_CHECKSUM_AUTO;
+        //TO Do: must be configured globally with the project config
+        frame.type = LIN_CHECKSUM_ENHANCED;  //frame.type = LIN_CHECKSUM_AUTO;
 
         bool send = cb->outgoing_cb(&frame, cb->user_data);
 
